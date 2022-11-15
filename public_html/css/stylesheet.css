@@ -1,0 +1,74 @@
+.hover_expand {
+    transition: all .4s;
+    backface-visibility: hidden;
+}
+
+.hover_expand:hover {
+    transform: scale(1.02);
+}
+
+.cursor_pointer {
+    cursor: pointer;
+}
+
+#darkSwitch {
+    transform: rotate(-90deg);
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bs-secondary);
+}
+
+.rounded-5 {
+    border-radius: 1rem;
+}
+
+.bg-vdark {
+    background-color: #181b1e;
+}
+
+.gallery-card {
+    transition: all 500ms;
+}
+
+.gallery-card:hover {
+    z-index: 1;
+    box-shadow: var(--bs-secondary) 0px 0.35em 1.175em, rgba(0, 0, 0, 0.05) 0px 0.175em 0.5em;
+    transform: translateY(-3px) scale(1.1);
+}
+
+.btn-empty {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+}
+
+.min_height {
+    min-height: 100vh;
+}
+
+.navbar_icon {
+    content: url("../static/icon.svg");
+    height:30px;
+    width:30px;
+}
+
+.status_icon {
+    content: url("../static/icon.svg");
+    height:100px;
+    width:100px;
+}
+
+.anchor {
+    position: absolute;
+    transform: translateY(-100px);
+}
+
+* {
+    transition: all 250ms;
+}
