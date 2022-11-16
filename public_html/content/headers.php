@@ -6,7 +6,8 @@ function isLoggedIn()
     if (!empty($_SESSION['logged_in'])) {
         return $_SESSION['logged_in'];
     } else {
-        return false;
+        header("Location: login.php");
+        exit();
     }
 }
 
