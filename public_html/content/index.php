@@ -14,19 +14,12 @@
 
 <body class="page-background">
 <?php include('navbar.php'); ?>
-<div class="page-background min_height pt-5">
-    <div class="container col-12">
-        <div class="row d-flex justify-content-center pb-5 align-items-center">
-            <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                <div class="card background text-color rounded-5 shadow">
-                    <div class="card-body p-3 text-center">
-                        <h1 class="text-nowrap">Residential Services</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<?if(isAdminUser()) {
+    include('admin_index.php');
+}
+else {
+    include('student_index.php');
+}?>
 <?php include('footer.php'); ?>
 </body>
 </html>
