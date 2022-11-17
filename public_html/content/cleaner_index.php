@@ -7,15 +7,15 @@
             <div class="row justify-content-center">
                 <div class="card container-fluid p-2 m-3 w-auto">
                     <div class="card-title text-center fs-2">
-                        Student Services
+                        Cleaning Services
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="btn-group-vertical col-6 mb-5 rounded-3">
-                    <button type="button" class="btn btn-primary mb-2 rounded-3">View Lease</button>
-                    <button type="button" class="btn btn-primary mb-2 rounded-3">View Invoices</button>
-                    <button type="button" class="btn btn-primary mb-2 rounded-3">View Advisor</button>
+                    <button type="button" class="btn btn-primary mb-2 rounded-3">View Student Flats</button>
+                    <button type="button" class="btn btn-primary mb-2 rounded-3">View Flat Inspections</button>
+                    <button type="button" class="btn btn-primary mb-2 rounded-3">Add Flat Inspection</button>
                 </div>
             </div>
         </div>

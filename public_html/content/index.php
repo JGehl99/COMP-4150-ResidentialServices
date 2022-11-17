@@ -12,14 +12,16 @@
     <meta name="language" content="English">
 </head>
 
-<body class="page-background">
-<?php include('navbar.php'); ?>
-<?if(isAdminUser()) {
-    include('admin_index.php');
-}
-else {
-    include('student_index.php');
-}?>
-<?php include('footer.php'); ?>
-</body>
+<?php
+    if($_SESSION['account_type'] == "Hall Manager" || $_SESSION['account_type'] == "Administrative Assistant"){
+        include('admin_index.php');
+    } else if($_SESSION['account_type'] == "Cleaner"){
+        include('cleaner_index.php');
+    } else if($_SESSION['account_type'] == "Student"){
+        include('student_index.php');
+    } else{
+        header("Location: https://residentialservices.gehlj.myweb.cs.uwindsor.ca/content/login.php");
+        exit();
+    }
+?>
 </html>
