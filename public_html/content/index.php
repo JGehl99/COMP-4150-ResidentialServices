@@ -12,21 +12,16 @@
     <meta name="language" content="English">
 </head>
 
-<body class="page-background">
-<?php include('navbar.php'); ?>
-<div class="page-background min_height pt-5">
-    <div class="container col-12">
-        <div class="row d-flex justify-content-center pb-5 align-items-center">
-            <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-6">
-                <div class="card background text-color rounded-5 shadow">
-                    <div class="card-body p-3 text-center">
-                        <h1 class="text-nowrap">Residential Services</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<?php include('footer.php'); ?>
-</body>
+<?php
+    if($_SESSION['account_type'] == "Hall Manager" || $_SESSION['account_type'] == "Administrative Assistant"){
+        include('admin_index.php');
+    } else if($_SESSION['account_type'] == "Cleaner"){
+        include('cleaner_index.php');
+    } else if($_SESSION['account_type'] == "Student"){
+        include('student_index.php');
+    } else{
+        header("Location: https://residentialservices.gehlj.myweb.cs.uwindsor.ca/content/login.php");
+        exit();
+    }
+?>
 </html>
