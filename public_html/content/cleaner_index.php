@@ -1,5 +1,5 @@
 <body class="vh-100">
-<?php include('navbar.php'); ?>
+<?php include('staffnav.php'); ?>
 <div class="yellow_bg container-fluid yellow_bg h-100">
     <div class="p-5"></div>
     <div class="pt-3 row justify-content-center">
