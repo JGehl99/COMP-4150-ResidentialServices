@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Check to see if username already exists in db
-        $sql = "SELECT username, password, position FROM HOSTEL_STAFF WHERE username=?";
+        $sql = "SELECT username, password, position, staff_number FROM HOSTEL_STAFF WHERE username=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $username);
         $stmt->execute();
@@ -80,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = $result['username'];
                 $_SESSION['account_type'] = $result['position'];
+                $_SESSION['staff_number'] = $result['staff_number'];
                 echo "<script type='text/javascript'>window.location.href = 'index.php';</script>";
                 exit();
             } else {
@@ -91,38 +92,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <body class="page-background">
-<?php include('navbar.php'); ?>
-<section>
-    <div class="container py-5 min_height">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card background text-black rounded-5 shadow">
+<div class="yellow_bg container-fluid yellow_bg vh-100">
+    <div class="p-2"></div>
+    <div class="pt-3 row justify-content-center">
+        <div class="col-10 container-fluid rounded-3">
+            <div class="row justify-content-center">
+                <div class="card background w-auto text-black rounded-5 shadow blue_bg">
                     <div class="card-body p-5 text-center">
-                        <form class="mb-md-5 mt-md-4 pb-5" method="post"
+                        <form class="mb-md-5 mt-md-4 pb-2" method="post"
                               action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
-                            <h2 class="fw-bold mb-2 text-uppercase text-color">Login</h2>
-                            <p class="text-color mb-5">Please enter your login and password!</p>
+                            <h2 class="fs-2 mb-2 text-uppercase text-white">Login</h2>
+                            <p class="text-light mb-5">Please enter your login and password!</p>
                             <?php if (!empty($msg)) echo $msg ?>
 
                             <div class="form-outline form-white mb-4">
                                 <input type="text" id="username" name="username" class="form-control form-control-lg"/>
-                                <label class="form-label text-color" for="username">Username</label>
+                                <label class="form-label text-light" for="username">Username</label>
                             </div>
 
                             <div class="form-outline form-white mb-4">
                                 <input type="password" id="password" name="password"
                                        class="form-control form-control-lg"/>
-                                <label class="form-label text-color" for="password">Password</label>
+                                <label class="form-label text-light" for="password">Password</label>
                             </div>
-
-                            <button class="btn btn-secondary btn-lg px-5 shadow" type="submit">Login</button>
+                            <button class="btn btn-primary btn-lg px-5 shadow" type="submit">Login</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 </body>
 </html>
