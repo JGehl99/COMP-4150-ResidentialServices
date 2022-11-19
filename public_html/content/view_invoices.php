@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    $title = 'View Advisor';
+    $title = 'View Invoices';
     include('headers.php');
     ?>
     <meta name="title" content="Home">
@@ -21,14 +21,14 @@
             <div class="row justify-content-center">
                 <div class="card container-fluid p-2 m-3 w-auto">
                     <div class="card-title text-center fs-2">
-                        Advisor
+                        Invoice
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <?php
                 $username = $_SESSION['username'];
-                $sql = "SELECT FULL_NAME, POSITION, DEPARTMENT, EXTENSION, OFFICE_NUMBER FROM STUDENT_ADVISOR WHERE EMPLOYEE_ID = (SELECT ADVISOR FROM STUDENT WHERE USERNAME = ?)";
+                $sql = "SELECT INVOICE_NUMBER, SEMESTER, PAYMENT_DUE, PAY_DATE, FIRST_REMINDER, SECOND_REMINDER FROM INVOICES WHERE LEASE_NUMBER = (SELECT LEASE_NUMBER FROM LEASES WHERE STUDENT = (SELECT GRADE_12_NUMBER FROM STUDENT WHERE USERNAME = ?))";
 
                 // create connection
                 $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
@@ -43,11 +43,13 @@
                 $stmt->execute();
                 $result = $stmt->get_result()->fetch_assoc();
 
-                echo "<div class='card-title text-center fs-2'> Name: ". $result["FULL_NAME"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Position: ". $result["POSITION"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Department: ". $result["DEPARTMENT"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Extension: ". $result["EXTENSION"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Office Number: ". $result["OFFICE_NUMBER"]. "</div>";
+                echo "<div class='card-title text-center fs-2'> Invoice Number: ". $result["INVOICE_NUMBER"]. "</div>";
+                echo "<div class='card-title text-center fs-2'> Semester: ". $result["SEMESTER"]. "</div>";
+                echo "<div class='card-title text-center fs-2'> Payment due on: ". $result["PAYMENT_DUE"]. "</div>";
+                if (empty($result["PAY_DATE"])) {  echo "<div class='card-title text-center fs-2'>Not paid!</div>"; }
+                else {echo "<div class='card-title text-center fs-2'> Paid on: ". $result["PAY_DATE"]. "</div>";}
+                echo "<div class='card-title text-center fs-2'> First reminder on: ". $result["FIRST_REMINDER"]. "</div>";
+                echo "<div class='card-title text-center fs-2'> Second reminder on: ". $result["SECOND_REMINDER"]. "</div>";
 
                 $stmt->close();
                 $conn->close();

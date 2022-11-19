@@ -48,35 +48,18 @@
     background: transparent;
 }
 
-.full_height {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 0;
-}
-
-.yellow_bg {
-    background-color: #FFCE00;
-}
-
-.blue_bg {
-    background-color: #005596;
-}
-
-#navbar {
-    z-index: 1;
-    background-color: #FFFFFF;
+.min_height {
+    min-height: 100vh;
 }
 
 .navbar_icon {
-    content: url("../static/icon.png");
+    content: url("../static/icon.svg");
     height:30px;
     width:30px;
 }
 
 .status_icon {
-    content: url("../static/icon.png");
+    content: url("../static/icon.svg");
     height:100px;
     width:100px;
 }
@@ -84,4 +67,8 @@
 .anchor {
     position: absolute;
     transform: translateY(-100px);
+}
+
+* {
+    transition: all 250ms;
 }
