@@ -13,8 +13,8 @@
             </div>
             <div class="row justify-content-center">
                 <div class="btn-group-vertical col-11 mb-5 rounded-3">
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View Lease</a>
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View Invoices</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="view_lease.php">View Lease</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="view_invoices.php">View Invoices</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3" href="view_advisor.php">View Advisor</a>
                 </div>
             </div>
