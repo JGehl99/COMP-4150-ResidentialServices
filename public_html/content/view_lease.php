@@ -25,7 +25,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <table class="w-100 table bg-white rounded-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Location</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Rent Rate</th>
+                        <th scope="col">Place #</th>
+                        <th scope="col">Enter Date</th>
+                        <th scope="col">Exit Date</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
                 $username = $_SESSION['username'];
                 $sql1 = "SELECT ADDRESS, TYPE FROM LOCATED_AT WHERE LOC_ID = (SELECT PLACE_NUMBER FROM LEASES WHERE STUDENT = (SELECT GRADE_12_NUMBER FROM STUDENT WHERE USERNAME = ?))";
@@ -43,32 +54,45 @@
                 $stmt = $conn->prepare($sql1);
                 $stmt->bind_param("s", $username);
                 $stmt->execute();
-                $result = $stmt->get_result()->fetch_assoc();
 
-                echo "<div class='card-title text-center fs-2'> Location: ". $result["ADDRESS"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Type: ". $result["TYPE"]. "</div>";
+                $results = $stmt->get_result();
+                while ($result= $results->fetch_assoc()) {
+                    echo "<tr>";
+
+                    echo "<td>" . $result["ADDRESS"] . "</td>";
+                    echo "<td>" . $result["TYPE"] . "</td>";
+                }
 
                 $stmt = $conn->prepare($sql2);
                 $stmt->bind_param("s", $username);
                 $stmt->execute();
-                $result = $stmt->get_result()->fetch_assoc();
 
-                echo "<div class='card-title text-center fs-2'> Rent rate: ". $result["RENT_RATE"]. "</div>";
+                $results = $stmt->get_result();
+                while ($result= $results->fetch_assoc()) {
+
+                    echo "<td>" . $result["RENT_RATE"] . "</td>";
+                }
 
                 $stmt = $conn->prepare($sql3);
                 $stmt->bind_param("s", $username);
                 $stmt->execute();
-                $result = $stmt->get_result()->fetch_assoc();
 
-                echo "<div class='card-title text-center fs-2'> Place #: ". $result["PLACE_NUMBER"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Enter date: ". $result["ENTER_DATE"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Exit date: ". $result["EXIT_DATE"]. "</div>";
+                $results = $stmt->get_result();
+                while ($result= $results->fetch_assoc()) {
+
+                    echo "<td>" . $result["PLACE_NUMBER"]. "</td>";
+                    echo "<td>" . $result["ENTER_DATE"] . "</td>";
+                    echo "<td>" . $result["EXIT_DATE"] . "</td>";
+
+                    echo "</tr>";
+                }
 
                 $stmt->close();
                 $conn->close();
 
                 ?>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

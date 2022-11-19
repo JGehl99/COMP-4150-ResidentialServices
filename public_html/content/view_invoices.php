@@ -25,7 +25,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <table class="w-100 table bg-white rounded-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Invoice #</th>
+                        <th scope="col">Semester</th>
+                        <th scope="col">Payment due date</th>
+                        <th scope="col">Date paid</th>
+                        <th scope="col">First Reminder</th>
+                        <th scope="col">Second Reminder</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
                 $username = $_SESSION['username'];
                 $sql = "SELECT INVOICE_NUMBER, SEMESTER, PAYMENT_DUE, PAY_DATE, FIRST_REMINDER, SECOND_REMINDER FROM INVOICES WHERE LEASE_NUMBER = (SELECT LEASE_NUMBER FROM LEASES WHERE STUDENT = (SELECT GRADE_12_NUMBER FROM STUDENT WHERE USERNAME = ?))";
@@ -41,21 +52,28 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $username);
                 $stmt->execute();
-                $result = $stmt->get_result()->fetch_assoc();
 
-                echo "<div class='card-title text-center fs-2'> Invoice Number: ". $result["INVOICE_NUMBER"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Semester: ". $result["SEMESTER"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Payment due on: ". $result["PAYMENT_DUE"]. "</div>";
-                if (empty($result["PAY_DATE"])) {  echo "<div class='card-title text-center fs-2'>Not paid!</div>"; }
-                else {echo "<div class='card-title text-center fs-2'> Paid on: ". $result["PAY_DATE"]. "</div>";}
-                echo "<div class='card-title text-center fs-2'> First reminder on: ". $result["FIRST_REMINDER"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Second reminder on: ". $result["SECOND_REMINDER"]. "</div>";
+                $results = $stmt->get_result();
+                while ($result= $results->fetch_assoc()) {
+                    echo "<tr>";
+
+                    echo "<td>" . $result["INVOICE_NUMBER"] . "</td>";
+                    echo "<td>" . $result["SEMESTER"] . "</td>";
+                    echo "<td>" . $result["PAYMENT_DUE"] . "</td>";
+                    if (empty($result["PAY_DATE"])) {  echo "<td> -- -- --</td>"; }
+                    else {echo "<td>" . $result["PAY_DATE"] . "</td>";}
+                    echo "<td>" . $result["FIRST_REMINDER"] . "</td>";
+                    echo "<td>" . $result["SECOND_REMINDER"] . "</td>";
+
+                    echo "</tr>";
+                }
 
                 $stmt->close();
                 $conn->close();
 
                 ?>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

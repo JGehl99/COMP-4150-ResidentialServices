@@ -25,7 +25,17 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <table class="w-100 table bg-white rounded-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Extension</th>
+                        <th scope="col">Office Number</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
                 $username = $_SESSION['username'];
                 $sql = "SELECT FULL_NAME, POSITION, DEPARTMENT, EXTENSION, OFFICE_NUMBER FROM STUDENT_ADVISOR WHERE EMPLOYEE_ID = (SELECT ADVISOR FROM STUDENT WHERE USERNAME = ?)";
@@ -43,17 +53,21 @@
                 $stmt->execute();
                 $result = $stmt->get_result()->fetch_assoc();
 
-                echo "<div class='card-title text-center fs-2'> Name: ". $result["FULL_NAME"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Position: ". $result["POSITION"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Department: ". $result["DEPARTMENT"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Extension: ". $result["EXTENSION"]. "</div>";
-                echo "<div class='card-title text-center fs-2'> Office Number: ". $result["OFFICE_NUMBER"]. "</div>";
+                echo "<tr>";
 
+                echo "<td>" . $result["FULL_NAME"] . "</td>";
+                echo "<td>" . $result["POSITION"] . "</td>";
+                echo "<td>" . $result["DEPARTMENT"] . "</td>";
+                echo "<td>" . $result["EXTENSION"] . "</td>";
+                echo "<td>" . $result["OFFICE_NUMBER"] . "</td>";
+
+                echo "</tr>";
                 $stmt->close();
                 $conn->close();
 
                 ?>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
