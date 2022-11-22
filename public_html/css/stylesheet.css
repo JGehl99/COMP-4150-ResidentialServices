@@ -98,3 +98,14 @@
 .highlight {
     animation: highlight 3s;
 }
+
+.tableFixHead {
+    overflow-y: auto;
+    height: 35vh;
+    border-radius: 3px;
+}
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    background: darkgray;
+}

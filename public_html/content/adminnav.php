@@ -8,7 +8,7 @@
                 Services
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">View/Edit Locations</a></li>
+                <li><a class="dropdown-item" href="admin_locations.php">View/Edit Locations</a></li>
                 <li><a class="dropdown-item" href="#">View/Edit Residence Halls</a></li>
                 <li><a class="dropdown-item" href="#">View/Edit Student Flats</a></li>
                 <li><a class="dropdown-item" href="#">View/Edit Flat Inspections</a></li>

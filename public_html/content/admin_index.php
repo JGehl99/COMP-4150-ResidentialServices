@@ -93,7 +93,7 @@
             </table>
             <div class="row justify-content-center">
                 <div class="btn-group-vertical col-11 mb-5 rounded-3">
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Locations</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_locations.php">View/Edit Locations</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Residence Halls</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Student Flats</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Flat Inspections</a>
