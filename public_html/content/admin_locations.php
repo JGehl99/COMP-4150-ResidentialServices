@@ -27,137 +27,81 @@
             </div>
             <div class="tableFixHead">
                 <table class="w-100 table table-striped bg-white">
-                <thead>
-                <tr>
-                    <th scope="col">LOC_ID</th>
-                    <th scope="col">ADDRESS</th>
-                    <th scope="col">TYPE</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    if (!empty($_POST['loc_id']) && !empty($_POST['address']) && !empty($_POST['type'])) {
+                    <thead>
+                    <tr>
+                        <th scope="col">LOC_ID</th>
+                        <th scope="col">ADDRESS</th>
+                        <th scope="col">TYPE</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    // create connection
+                    $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
 
-                        $loc_id = intval($_POST['loc_id']);
-                        $addr = trim($_POST['address']);
-                        $type = trim($_POST['type']);
+                    // check connection
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
 
-                        // create connection
-                        $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
+                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        if (!empty($_POST['loc_id']) && !empty($_POST['address']) && !empty($_POST['type'])) {
+                            $loc_id = intval($_POST['loc_id']);
+                            $addr = trim($_POST['address']);
+                            $type = trim($_POST['type']);
 
-                        // check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
-                        }
 
-                        // Check to see if that flat exists
-                        $sql = "SELECT 1 FROM LOCATED_AT WHERE LOC_ID=?";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->bind_param("d", $loc_id);
-                        $stmt->execute();
-                        $result = $stmt->get_result()->fetch_assoc();
-
-                        if (is_null($result)) {
-                            $stmt->close();
-                            $conn->close();
-
-                            // create connection
-                            $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
-
-                            // check connection
-                            if ($conn->connect_error) {
-                                die("Connection failed: " . $conn->connect_error);
-                            }
-
-                            $sql = "INSERT INTO LOCATED_AT(ADDRESS, TYPE) VALUES(?, ?);";
+                            // Check to see if that location exists
+                            $sql = "SELECT 1 FROM LOCATED_AT WHERE LOC_ID=?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("ss", $addr, $type);
+                            $stmt->bind_param("d", $loc_id);
+                            $stmt->execute();
+                            $result = $stmt->get_result()->fetch_assoc();
+
+                            $stmt->close();
+
+                            if (is_null($result)) {
+                                $sql = "INSERT INTO LOCATED_AT(ADDRESS, TYPE) VALUES(?, ?);";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("ss", $addr, $type);
+                            } else {
+                                $sql = "UPDATE LOCATED_AT SET ADDRESS=?, TYPE=? WHERE LOC_ID=?;";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("ssi", $addr, $type, $loc_id);
+                            }
 
                             if (!$stmt->execute()) {
                                 echo $conn->error;
 
                                 $msg = "<p class=\"text-danger\">Error, please try again!</p>";
-                                $stmt->close();
-                                $conn->close();
-
                             } else {
                                 $id = mysqli_insert_id($conn);
-                                $stmt->close();
-                                $conn->close();
-
-//                                header("Location: https://residentialservices.gehlj.myweb.cs.uwindsor.ca/content/admin_locations.php");
-//                                die();
                             }
-
-                        } else {
                             $stmt->close();
-                            $conn->close();
-
-                            // create connection
-                            $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
-
-                            // check connection
-                            if ($conn->connect_error) {
-                                die("Connection failed: " . $conn->connect_error);
-                            }
-
-                            $sql = "UPDATE LOCATED_AT SET ADDRESS=?, TYPE=? WHERE LOC_ID=?;";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("ssi", $addr, $type, $loc_id);
-
-                            if (!$stmt->execute()) {
-                                echo $conn->error;
-
-                                $msg = "<p class=\"text-danger\">Error, please try again!</p>";
-                                $stmt->close();
-                                $conn->close();
-
-
-                            } else {
-                                $id = mysqli_insert_id($conn);
-                                $stmt->close();
-                                $conn->close();
-
-//                            header("location:https://residentialservices.gehlj.myweb.cs.uwindsor.ca/content/admin_index.php");
-//                                die();
-                            }
                         }
                     }
-                }
 
-                $username = $_SESSION['username'];
-                $sql = "SELECT * FROM LOCATED_AT";
+                    $sql = "SELECT * FROM LOCATED_AT";
 
-                // create connection
-                $conn = new mysqli(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
 
-                // check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
-                }
+                    $results = $stmt->get_result();
+                    while ($result = $results->fetch_assoc()) {
+                        echo "<tr>";
 
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("s", $username);
-                $stmt->execute();
+                        echo "<td>" . $result["LOC_ID"] . "</td>";
+                        echo "<td>" . $result["ADDRESS"] . "</td>";
+                        echo "<td>" . $result["TYPE"] . "</td>";
 
-                $results = $stmt->get_result();
-                while ($result = $results->fetch_assoc()) {
-                    echo "<tr>";
+                        echo "</tr>";
+                    }
 
-                    echo "<td>" . $result["LOC_ID"] . "</td>";
-                    echo "<td>" . $result["ADDRESS"] . "</td>";
-                    echo "<td>" . $result["TYPE"] . "</td>";
-
-                    echo "</tr>";
-                }
-
-
-                $stmt->close();
-                $conn->close();
-                ?>
-                </tbody>
-            </table>
+                    $stmt->close();
+                    $conn->close();
+                    ?>
+                    </tbody>
+                </table>
             </div>
             <div class="col-11 col-sm-8 col-md-6 blue_bg container-fluid vh-75 rounded-3">
                 <div class="row justify-content-center">
@@ -170,7 +114,7 @@
                 <div class="row justify-content-center">
                     <form class="container d-flex justify-content-center p-3 col-12" method="post"
                           action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-                        <div class="col-12 rounded p-3">
+                        <div class="form-row col-12 rounded p-3">
                             <?php if (!empty($msg)) echo $msg; ?>
                             <div class="form-floating">
                                 <input type="number" class="form-control" name="loc_id" id="floatingTextarea"></input>
