@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    $title = 'View/Edit Locations';
+    $title = 'View/Edit Residence Halls';
     include('headers.php');
     ?>
     <meta name="title" content="Home">
@@ -21,7 +21,7 @@
             <div class="row justify-content-center">
                 <div class="card container-fluid p-2 m-3 w-auto">
                     <div class="card-title text-center fs-2">
-                        Locations
+                        Residence Halls
                     </div>
                 </div>
             </div>
@@ -29,9 +29,11 @@
                 <table class="w-100 table table-striped bg-white">
                     <thead>
                     <tr>
-                        <th scope="col">LOC_ID</th>
-                        <th scope="col">ADDRESS</th>
-                        <th scope="col">TYPE</th>
+                        <th scope="col">RES_ID</th>
+                        <th scope="col">HALL_NAME</th>
+                        <th scope="col">HALL_LOCATION</th>
+                        <th scope="col">TEL_NUMBER</th>
+                        <th scope="col">HALL_MANAGER</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,34 +47,36 @@
                     }
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        if (!empty($_POST['address']) && !empty($_POST['type'])) {
-                            if(!empty($_POST['loc_id'])) {
-                                $loc_id = intval($_POST['loc_id']);
+                        if (!empty($_POST['hall_name']) && !empty($_POST['hall_loc']) && !empty($_POST['tel_num']) && !empty($_POST['hall_mgr'])) {
+                            if(!empty($_POST['res_id'])) {
+                                $res_id = intval($_POST['res_id']);
                             } else {
-                                $loc_id = -1;
+                                $res_id = -1;
                             }
 
-                            $addr = trim($_POST['address']);
-                            $type = trim($_POST['type']);
+                            $hall_name = trim($_POST['hall_name']);
+                            $hall_loc = intval($_POST['hall_loc']);
+                            $tel_num = trim($_POST['tel_num']);
+                            $hall_mgr = intval($_POST['hall_mgr']);
 
 
                             // Check to see if that location exists
-                            $sql = "SELECT 1 FROM LOCATED_AT WHERE LOC_ID=?";
+                            $sql = "SELECT 1 FROM RESIDENCE_HALLS WHERE RES_ID=?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $loc_id);
+                            $stmt->bind_param("i", $res_id);
                             $stmt->execute();
                             $result = $stmt->get_result()->fetch_assoc();
 
                             $stmt->close();
 
                             if (is_null($result)) {
-                                $sql = "INSERT INTO LOCATED_AT(ADDRESS, TYPE) VALUES(?, ?);";
+                                $sql = "INSERT INTO RESIDENCE_HALLS(HALL_NAME, HALL_LOCATION, TEL_NUMBER, HALL_MANAGER) VALUES(?, ?, ?, ?);";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ss", $addr, $type);
+                                $stmt->bind_param("sisi", $hall_name, $hall_loc, $tel_num, $hall_mgr);
                             } else {
-                                $sql = "UPDATE LOCATED_AT SET ADDRESS=?, TYPE=? WHERE LOC_ID=?;";
+                                $sql = "UPDATE RESIDENCE_HALLS SET HALL_NAME=?, HALL_LOCATION=?, TEL_NUMBER=?, HALL_MANAGER=? WHERE RES_ID=?;";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ssi", $addr, $type, $loc_id);
+                                $stmt->bind_param("sisii", $hall_name, $hall_loc, $tel_num, $hall_mgr, $res_id);
                             }
 
                             if (!$stmt->execute()) {
@@ -86,7 +90,7 @@
                         }
                     }
 
-                    $sql = "SELECT * FROM LOCATED_AT";
+                    $sql = "SELECT * FROM RESIDENCE_HALLS ";
 
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
@@ -95,9 +99,11 @@
                     while ($result = $results->fetch_assoc()) {
                         echo "<tr>";
 
-                        echo "<td>" . $result["LOC_ID"] . "</td>";
-                        echo "<td>" . $result["ADDRESS"] . "</td>";
-                        echo "<td>" . $result["TYPE"] . "</td>";
+                        echo "<td>" . $result["RES_ID"] . "</td>";
+                        echo "<td>" . $result["HALL_NAME"] . "</td>";
+                        echo "<td>" . $result["HALL_LOCATION"] . "</td>";
+                        echo "<td>" . $result["TEL_NUMBER"] . "</td>";
+                        echo "<td>" . $result["HALL_MANAGER"] . "</td>";
 
                         echo "</tr>";
                     }
@@ -112,7 +118,7 @@
                 <div class="row justify-content-center">
                     <div class="container-fluid w-auto">
                         <div class="text-white text-center fs-2">
-                            Add/Edit Location
+                            Add/Edit Residence Hall
                         </div>
                     </div>
                 </div>
@@ -122,16 +128,24 @@
                         <div class="form-row col-12 rounded p-2">
                             <?php if (!empty($msg)) echo $msg; ?>
                             <div class="form-floating p-1">
-                                <input type="number" class="form-control" name="loc_id" id="floatingTextarea"></input>
+                                <input type="number" class="form-control" name="res_id" id="floatingTextarea"></input>
                                 <label for="floatingTextarea">ID</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="address" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Address</label>
+                                <input type="text" class="form-control" name="hall_name" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Hall Name</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="type" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Type</label>
+                                <input type="text" class="form-control" name="hall_loc" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Hall Location</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="tel_num" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Telephone Number</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="hall_mgr" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Hall Manager</label>
                             </div>
                             <div class="p-1" id="button_div">
                                 <button type="submit" class="btn btn-primary float-end" id="submit_button"

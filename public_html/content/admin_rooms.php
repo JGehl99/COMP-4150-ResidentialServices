@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    $title = 'View/Edit Locations';
+    $title = 'View/Edit Rooms';
     include('headers.php');
     ?>
     <meta name="title" content="Home">
@@ -21,7 +21,7 @@
             <div class="row justify-content-center">
                 <div class="card container-fluid p-2 m-3 w-auto">
                     <div class="card-title text-center fs-2">
-                        Locations
+                        Rooms
                     </div>
                 </div>
             </div>
@@ -29,9 +29,10 @@
                 <table class="w-100 table table-striped bg-white">
                     <thead>
                     <tr>
-                        <th scope="col">LOC_ID</th>
-                        <th scope="col">ADDRESS</th>
-                        <th scope="col">TYPE</th>
+                        <th scope="col">PLACE_NUMBER</th>
+                        <th scope="col">LOCATION</th>
+                        <th scope="col">ROOM_NUMBER</th>
+                        <th scope="col">RENT_RATE</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,34 +46,34 @@
                     }
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        if (!empty($_POST['address']) && !empty($_POST['type'])) {
-                            if(!empty($_POST['loc_id'])) {
-                                $loc_id = intval($_POST['loc_id']);
+                        if (!empty($_POST['loc']) && !empty($_POST['room']) && !empty($_POST['rent'])) {
+                            if(!empty($_POST['p_num'])) {
+                                $p_num = intval($_POST['p_num']);
                             } else {
-                                $loc_id = -1;
+                                $p_num = -1;
                             }
 
-                            $addr = trim($_POST['address']);
-                            $type = trim($_POST['type']);
-
+                            $loc = intval($_POST['loc']);
+                            $room = intval($_POST['room']);
+                            $rent = intval($_POST['rent']);
 
                             // Check to see if that location exists
-                            $sql = "SELECT 1 FROM LOCATED_AT WHERE LOC_ID=?";
+                            $sql = "SELECT 1 FROM ROOMS WHERE PLACE_NUMBER=?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $loc_id);
+                            $stmt->bind_param("i", $p_num);
                             $stmt->execute();
                             $result = $stmt->get_result()->fetch_assoc();
 
                             $stmt->close();
 
                             if (is_null($result)) {
-                                $sql = "INSERT INTO LOCATED_AT(ADDRESS, TYPE) VALUES(?, ?);";
+                                $sql = "INSERT INTO ROOMS(LOCATION, ROOM_NUMBER, RENT_RATE) VALUES(?, ?, ?);";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ss", $addr, $type);
+                                $stmt->bind_param("iii", $loc, $room, $rent);
                             } else {
-                                $sql = "UPDATE LOCATED_AT SET ADDRESS=?, TYPE=? WHERE LOC_ID=?;";
+                                $sql = "UPDATE ROOMS SET LOCATION=?, ROOM_NUMBER=?, RENT_RATE=? WHERE PLACE_NUMBER=?;";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ssi", $addr, $type, $loc_id);
+                                $stmt->bind_param("iiii", $loc, $room, $rent, $p_num);
                             }
 
                             if (!$stmt->execute()) {
@@ -86,7 +87,7 @@
                         }
                     }
 
-                    $sql = "SELECT * FROM LOCATED_AT";
+                    $sql = "SELECT * FROM ROOMS";
 
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
@@ -95,9 +96,10 @@
                     while ($result = $results->fetch_assoc()) {
                         echo "<tr>";
 
-                        echo "<td>" . $result["LOC_ID"] . "</td>";
-                        echo "<td>" . $result["ADDRESS"] . "</td>";
-                        echo "<td>" . $result["TYPE"] . "</td>";
+                        echo "<td>" . $result["PLACE_NUMBER"] . "</td>";
+                        echo "<td>" . $result["LOCATION"] . "</td>";
+                        echo "<td>" . $result["ROOM_NUMBER"] . "</td>";
+                        echo "<td>" . $result["RENT_RATE"] . "</td>";
 
                         echo "</tr>";
                     }
@@ -112,7 +114,7 @@
                 <div class="row justify-content-center">
                     <div class="container-fluid w-auto">
                         <div class="text-white text-center fs-2">
-                            Add/Edit Location
+                            Add/Edit Rooms
                         </div>
                     </div>
                 </div>
@@ -122,16 +124,20 @@
                         <div class="form-row col-12 rounded p-2">
                             <?php if (!empty($msg)) echo $msg; ?>
                             <div class="form-floating p-1">
-                                <input type="number" class="form-control" name="loc_id" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">ID</label>
+                                <input type="number" class="form-control" name="p_num" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Place Number</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="address" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Address</label>
+                                <input type="text" class="form-control" name="loc" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Location</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="type" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Type</label>
+                                <input type="text" class="form-control" name="room" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Room Number</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="rent" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Rent Rate</label>
                             </div>
                             <div class="p-1" id="button_div">
                                 <button type="submit" class="btn btn-primary float-end" id="submit_button"

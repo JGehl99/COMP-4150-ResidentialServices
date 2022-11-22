@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    $title = 'View/Edit Locations';
+    $title = 'View/Edit Student Flats';
     include('headers.php');
     ?>
     <meta name="title" content="Home">
@@ -21,7 +21,7 @@
             <div class="row justify-content-center">
                 <div class="card container-fluid p-2 m-3 w-auto">
                     <div class="card-title text-center fs-2">
-                        Locations
+                        Student Flats
                     </div>
                 </div>
             </div>
@@ -29,9 +29,9 @@
                 <table class="w-100 table table-striped bg-white">
                     <thead>
                     <tr>
-                        <th scope="col">LOC_ID</th>
-                        <th scope="col">ADDRESS</th>
-                        <th scope="col">TYPE</th>
+                        <th scope="col">FLAT_ID</th>
+                        <th scope="col">FLAT_LOCATION</th>
+                        <th scope="col">NUMBER_OF_ROOMS</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,34 +45,34 @@
                     }
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        if (!empty($_POST['address']) && !empty($_POST['type'])) {
-                            if(!empty($_POST['loc_id'])) {
-                                $loc_id = intval($_POST['loc_id']);
+                        if (!empty($_POST['flat_loc']) && !empty($_POST['num_rooms'])) {
+                            if(!empty($_POST['flat_id'])) {
+                                $flat_id = intval($_POST['flat_id']);
                             } else {
-                                $loc_id = -1;
+                                $flat_id = -1;
                             }
 
-                            $addr = trim($_POST['address']);
-                            $type = trim($_POST['type']);
+                            $flat_loc = trim($_POST['flat_loc']);
+                            $num_rooms = intval($_POST['num_rooms']);
 
 
                             // Check to see if that location exists
-                            $sql = "SELECT 1 FROM LOCATED_AT WHERE LOC_ID=?";
+                            $sql = "SELECT 1 FROM STUDENT_FLATS WHERE FLAT_ID=?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $loc_id);
+                            $stmt->bind_param("i", $flat_id);
                             $stmt->execute();
                             $result = $stmt->get_result()->fetch_assoc();
 
                             $stmt->close();
 
                             if (is_null($result)) {
-                                $sql = "INSERT INTO LOCATED_AT(ADDRESS, TYPE) VALUES(?, ?);";
+                                $sql = "INSERT INTO STUDENT_FLATS(FLAT_LOCATION, NUMBER_OF_ROOMS) VALUES(?, ?);";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ss", $addr, $type);
+                                $stmt->bind_param("si", $flat_loc, $num_rooms);
                             } else {
-                                $sql = "UPDATE LOCATED_AT SET ADDRESS=?, TYPE=? WHERE LOC_ID=?;";
+                                $sql = "UPDATE STUDENT_FLATS SET FLAT_LOCATION=?, NUMBER_OF_ROOMS=? WHERE FLAT_ID=?;";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ssi", $addr, $type, $loc_id);
+                                $stmt->bind_param("sii", $flat_loc, $num_rooms, $flat_id);
                             }
 
                             if (!$stmt->execute()) {
@@ -86,7 +86,7 @@
                         }
                     }
 
-                    $sql = "SELECT * FROM LOCATED_AT";
+                    $sql = "SELECT * FROM STUDENT_FLATS";
 
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
@@ -95,9 +95,9 @@
                     while ($result = $results->fetch_assoc()) {
                         echo "<tr>";
 
-                        echo "<td>" . $result["LOC_ID"] . "</td>";
-                        echo "<td>" . $result["ADDRESS"] . "</td>";
-                        echo "<td>" . $result["TYPE"] . "</td>";
+                        echo "<td>" . $result["FLAT_ID"] . "</td>";
+                        echo "<td>" . $result["FLAT_LOCATION"] . "</td>";
+                        echo "<td>" . $result["NUMBER_OF_ROOMS"] . "</td>";
 
                         echo "</tr>";
                     }
@@ -112,7 +112,7 @@
                 <div class="row justify-content-center">
                     <div class="container-fluid w-auto">
                         <div class="text-white text-center fs-2">
-                            Add/Edit Location
+                            Add/Edit Student Flats
                         </div>
                     </div>
                 </div>
@@ -122,16 +122,16 @@
                         <div class="form-row col-12 rounded p-2">
                             <?php if (!empty($msg)) echo $msg; ?>
                             <div class="form-floating p-1">
-                                <input type="number" class="form-control" name="loc_id" id="floatingTextarea"></input>
+                                <input type="number" class="form-control" name="flat_id" id="floatingTextarea"></input>
                                 <label for="floatingTextarea">ID</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="address" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Address</label>
+                                <input type="text" class="form-control" name="flat_loc" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Location</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="type" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Type</label>
+                                <input type="text" class="form-control" name="num_rooms" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Number of Rooms</label>
                             </div>
                             <div class="p-1" id="button_div">
                                 <button type="submit" class="btn btn-primary float-end" id="submit_button"

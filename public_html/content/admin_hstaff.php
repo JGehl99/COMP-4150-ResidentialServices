@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    $title = 'View/Edit Locations';
+    $title = 'View/Edit Hostel Staff';
     include('headers.php');
     ?>
     <meta name="title" content="Home">
@@ -21,7 +21,7 @@
             <div class="row justify-content-center">
                 <div class="card container-fluid p-2 m-3 w-auto">
                     <div class="card-title text-center fs-2">
-                        Locations
+                        Hostel Staff
                     </div>
                 </div>
             </div>
@@ -29,9 +29,13 @@
                 <table class="w-100 table table-striped bg-white">
                     <thead>
                     <tr>
-                        <th scope="col">LOC_ID</th>
-                        <th scope="col">ADDRESS</th>
-                        <th scope="col">TYPE</th>
+                        <th scope="col">STAFF_NUMBER</th>
+                        <th scope="col">FULL_NAME</th>
+                        <th scope="col">HOME_ADDRESS</th>
+                        <th scope="col">DOB</th>
+                        <th scope="col">GENDER</th>
+                        <th scope="col">POSITION</th>
+                        <th scope="col">STAFF_LOCATION</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,34 +49,38 @@
                     }
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        if (!empty($_POST['address']) && !empty($_POST['type'])) {
-                            if(!empty($_POST['loc_id'])) {
-                                $loc_id = intval($_POST['loc_id']);
+                        if (!empty($_POST['full_name']) && !empty($_POST['home_addr']) && !empty($_POST['dob']) && !empty($_POST['gender']) && !empty($_POST['position']) && !empty($_POST['staff_loc'])) {
+                            if(!empty($_POST['staff_num'])) {
+                                $staff_num = intval($_POST['staff_num']);
                             } else {
-                                $loc_id = -1;
+                                $staff_num = -1;
                             }
 
-                            $addr = trim($_POST['address']);
-                            $type = trim($_POST['type']);
+                            $full_name = trim($_POST['full_name']);
+                            $home_addr = trim($_POST['home_addr']);
+                            $dob = trim($_POST['dob']);
+                            $gender = trim($_POST['gender']);
+                            $position = trim($_POST['position']);
+                            $staff_loc = intval($_POST['staff_loc']);
 
 
                             // Check to see if that location exists
-                            $sql = "SELECT 1 FROM LOCATED_AT WHERE LOC_ID=?";
+                            $sql = "SELECT 1 FROM HOSTEL_STAFF WHERE STAFF_NUMBER=?";
                             $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $loc_id);
+                            $stmt->bind_param("i", $staff_num);
                             $stmt->execute();
                             $result = $stmt->get_result()->fetch_assoc();
 
                             $stmt->close();
 
                             if (is_null($result)) {
-                                $sql = "INSERT INTO LOCATED_AT(ADDRESS, TYPE) VALUES(?, ?);";
+                                $sql = "INSERT INTO HOSTEL_STAFF(FULL_NAME, HOME_ADDRESS, DOB, GENDER, POSITION, STAFF_LOCATION) VALUES(?, ?, ?, ?, ?, ?);";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ss", $addr, $type);
+                                $stmt->bind_param("sssssi", $full_name, $home_addr, $dob, $gender, $position, $staff_loc);
                             } else {
-                                $sql = "UPDATE LOCATED_AT SET ADDRESS=?, TYPE=? WHERE LOC_ID=?;";
+                                $sql = "UPDATE HOSTEL_STAFF SET FULL_NAME=?, HOME_ADDRESS=?, DOB=?, GENDER=?, POSITION=?, STAFF_LOCATION=? WHERE STAFF_NUMBER=?;";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("ssi", $addr, $type, $loc_id);
+                                $stmt->bind_param("sssssii", $full_name, $home_addr, $dob, $gender, $position, $staff_loc, $staff_num);
                             }
 
                             if (!$stmt->execute()) {
@@ -86,7 +94,7 @@
                         }
                     }
 
-                    $sql = "SELECT * FROM LOCATED_AT";
+                    $sql = "SELECT * FROM HOSTEL_STAFF";
 
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
@@ -95,9 +103,13 @@
                     while ($result = $results->fetch_assoc()) {
                         echo "<tr>";
 
-                        echo "<td>" . $result["LOC_ID"] . "</td>";
-                        echo "<td>" . $result["ADDRESS"] . "</td>";
-                        echo "<td>" . $result["TYPE"] . "</td>";
+                        echo "<td>" . $result["STAFF_NUMBER"] . "</td>";
+                        echo "<td>" . $result["FULL_NAME"] . "</td>";
+                        echo "<td>" . $result["HOME_ADDRESS"] . "</td>";
+                        echo "<td>" . $result["DOB"] . "</td>";
+                        echo "<td>" . $result["GENDER"] . "</td>";
+                        echo "<td>" . $result["POSITION"] . "</td>";
+                        echo "<td>" . $result["STAFF_LOCATION"] . "</td>";
 
                         echo "</tr>";
                     }
@@ -112,7 +124,7 @@
                 <div class="row justify-content-center">
                     <div class="container-fluid w-auto">
                         <div class="text-white text-center fs-2">
-                            Add/Edit Location
+                            Add/Edit Hostel Staff
                         </div>
                     </div>
                 </div>
@@ -122,16 +134,32 @@
                         <div class="form-row col-12 rounded p-2">
                             <?php if (!empty($msg)) echo $msg; ?>
                             <div class="form-floating p-1">
-                                <input type="number" class="form-control" name="loc_id" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">ID</label>
+                                <input type="number" class="form-control" name="staff_num" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Staff Number</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="address" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Address</label>
+                                <input type="text" class="form-control" name="full_name" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Full Name</label>
                             </div>
                             <div class="form-floating p-1">
-                                <input type="text" class="form-control" name="type" id="floatingTextarea"></input>
-                                <label for="floatingTextarea">Type</label>
+                                <input type="text" class="form-control" name="home_addr" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Home Address</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="dob" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Date of Birth</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="gender" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Gender</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="position" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Position</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="staff_loc" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Staff Location</label>
                             </div>
                             <div class="p-1" id="button_div">
                                 <button type="submit" class="btn btn-primary float-end" id="submit_button"

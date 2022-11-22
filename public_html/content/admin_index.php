@@ -94,10 +94,11 @@
             <div class="row justify-content-center">
                 <div class="btn-group-vertical col-11 mb-5 rounded-3">
                     <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_locations.php">View/Edit Locations</a>
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Residence Halls</a>
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Student Flats</a>
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Flat Inspections</a>
-                    <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Hostel Staff</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_halls.php">View/Edit Residence Halls</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_studflat.php">View/Edit Student Flats</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_rooms.php">View/Edit Rooms</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_flatinsp.php">View/Edit Flat Inspections</a>
+                    <a type="button" class="btn btn-primary mb-2 rounded-3" href="admin_hstaff.php">View/Edit Hostel Staff</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Student Advisors</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Students</a>
                     <a type="button" class="btn btn-primary mb-2 rounded-3">View/Edit Leases</a>
