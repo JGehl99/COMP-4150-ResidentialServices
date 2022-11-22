@@ -36,6 +36,8 @@
                         <th scope="col">GENDER</th>
                         <th scope="col">POSITION</th>
                         <th scope="col">STAFF_LOCATION</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">PASSWORD</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,7 +51,7 @@
                     }
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        if (!empty($_POST['full_name']) && !empty($_POST['home_addr']) && !empty($_POST['dob']) && !empty($_POST['gender']) && !empty($_POST['position']) && !empty($_POST['staff_loc'])) {
+                        if (!empty($_POST['full_name']) && !empty($_POST['home_addr']) && !empty($_POST['dob']) && !empty($_POST['gender']) && !empty($_POST['position']) && !empty($_POST['staff_loc']) && !empty($_POST['username']) && !empty($_POST['password'])) {
                             if(!empty($_POST['staff_num'])) {
                                 $staff_num = intval($_POST['staff_num']);
                             } else {
@@ -62,6 +64,8 @@
                             $gender = trim($_POST['gender']);
                             $position = trim($_POST['position']);
                             $staff_loc = intval($_POST['staff_loc']);
+                            $username = trim($_POST['username']);
+                            $password = trim($_POST['password']);
 
 
                             // Check to see if that location exists
@@ -74,13 +78,13 @@
                             $stmt->close();
 
                             if (is_null($result)) {
-                                $sql = "INSERT INTO HOSTEL_STAFF(FULL_NAME, HOME_ADDRESS, DOB, GENDER, POSITION, STAFF_LOCATION) VALUES(?, ?, ?, ?, ?, ?);";
+                                $sql = "INSERT INTO HOSTEL_STAFF(FULL_NAME, HOME_ADDRESS, DOB, GENDER, POSITION, STAFF_LOCATION, username, password) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("sssssi", $full_name, $home_addr, $dob, $gender, $position, $staff_loc);
+                                $stmt->bind_param("sssssiss", $full_name, $home_addr, $dob, $gender, $position, $staff_loc, $username, $password);
                             } else {
-                                $sql = "UPDATE HOSTEL_STAFF SET FULL_NAME=?, HOME_ADDRESS=?, DOB=?, GENDER=?, POSITION=?, STAFF_LOCATION=? WHERE STAFF_NUMBER=?;";
+                                $sql = "UPDATE HOSTEL_STAFF SET FULL_NAME=?, HOME_ADDRESS=?, DOB=?, GENDER=?, POSITION=?, STAFF_LOCATION=?, username=?, password=? WHERE STAFF_NUMBER=?;";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->bind_param("sssssii", $full_name, $home_addr, $dob, $gender, $position, $staff_loc, $staff_num);
+                                $stmt->bind_param("sssssissi", $full_name, $home_addr, $dob, $gender, $position, $staff_loc, $username, $password, $staff_num);
                             }
 
                             if (!$stmt->execute()) {
@@ -110,6 +114,8 @@
                         echo "<td>" . $result["GENDER"] . "</td>";
                         echo "<td>" . $result["POSITION"] . "</td>";
                         echo "<td>" . $result["STAFF_LOCATION"] . "</td>";
+                        echo "<td>" . $result["username"] . "</td>";
+                        echo "<td>" . $result["password"] . "</td>";
 
                         echo "</tr>";
                     }
@@ -160,6 +166,14 @@
                             <div class="form-floating p-1">
                                 <input type="text" class="form-control" name="staff_loc" id="floatingTextarea"></input>
                                 <label for="floatingTextarea">Staff Location</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="username" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Username</label>
+                            </div>
+                            <div class="form-floating p-1">
+                                <input type="text" class="form-control" name="password" id="floatingTextarea"></input>
+                                <label for="floatingTextarea">Password</label>
                             </div>
                             <div class="p-1" id="button_div">
                                 <button type="submit" class="btn btn-primary float-end" id="submit_button"
