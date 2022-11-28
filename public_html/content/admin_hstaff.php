@@ -37,7 +37,6 @@
                         <th scope="col">POSITION</th>
                         <th scope="col">STAFF_LOCATION</th>
                         <th scope="col">USERNAME</th>
-                        <th scope="col">PASSWORD</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -51,8 +50,10 @@
                     }
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        if (!empty($_POST['full_name']) && !empty($_POST['home_addr']) && !empty($_POST['dob']) && !empty($_POST['gender']) && !empty($_POST['position']) && !empty($_POST['staff_loc']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-                            if(!empty($_POST['staff_num'])) {
+                        if (!empty($_POST['full_name']) && !empty($_POST['home_addr']) && !empty($_POST['dob']) &&
+                            !empty($_POST['gender']) && !empty($_POST['position']) && !empty($_POST['staff_loc']) &&
+                            !empty($_POST['username']) && !empty($_POST['password'])) {
+                            if (!empty($_POST['staff_num'])) {
                                 $staff_num = intval($_POST['staff_num']);
                             } else {
                                 $staff_num = -1;
@@ -65,7 +66,7 @@
                             $position = trim($_POST['position']);
                             $staff_loc = intval($_POST['staff_loc']);
                             $username = trim($_POST['username']);
-                            $password = trim($_POST['password']);
+                            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
 
                             // Check to see if that location exists
@@ -115,7 +116,6 @@
                         echo "<td>" . $result["POSITION"] . "</td>";
                         echo "<td>" . $result["STAFF_LOCATION"] . "</td>";
                         echo "<td>" . $result["username"] . "</td>";
-                        echo "<td>" . $result["password"] . "</td>";
 
                         echo "</tr>";
                     }
@@ -140,7 +140,8 @@
                         <div class="form-row col-12 rounded p-2">
                             <?php if (!empty($msg)) echo $msg; ?>
                             <div class="form-floating p-1">
-                                <input type="number" class="form-control" name="staff_num" id="floatingTextarea"></input>
+                                <input type="number" class="form-control" name="staff_num"
+                                       id="floatingTextarea"></input>
                                 <label for="floatingTextarea">Staff Number</label>
                             </div>
                             <div class="form-floating p-1">
