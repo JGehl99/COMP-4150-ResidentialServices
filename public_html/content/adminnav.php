@@ -8,11 +8,12 @@
                 Services
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">View/Edit Locations</a></li>
-                <li><a class="dropdown-item" href="#">View/Edit Residence Halls</a></li>
-                <li><a class="dropdown-item" href="#">View/Edit Student Flats</a></li>
-                <li><a class="dropdown-item" href="#">View/Edit Flat Inspections</a></li>
-                <li><a class="dropdown-item" href="#">View/Edit Hostel Staff</a></li>
+                <li><a class="dropdown-item" href="admin_locations.php">View/Edit Locations</a></li>
+                <li><a class="dropdown-item" href="admin_halls.php">View/Edit Residence Halls</a></li>
+                <li><a class="dropdown-item" href="admin_studflat.php">View/Edit Student Flats</a></li>
+                <li><a class="dropdown-item" href="admin_rooms.php">View/Edit Rooms</a></li>
+                <li><a class="dropdown-item" href="admin_flatinsp.php">View/Edit Flat Inspections</a></li>
+                <li><a class="dropdown-item" href="admin_hstaff.php">View/Edit Hostel Staff</a></li>
                 <li><a class="dropdown-item" href="#">View/Edit Student Advisors</a></li>
                 <li><a class="dropdown-item" href="#">View/Edit Students</a></li>
                 <li><a class="dropdown-item" href="#">View/Edit Leases</a></li>

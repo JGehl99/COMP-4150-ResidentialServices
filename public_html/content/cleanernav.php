@@ -7,9 +7,9 @@
             Services
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">View Flats</a></li>
-            <li><a class="dropdown-item" href="#">View Inspections</a></li>
-            <li><a class="dropdown-item" href="#">Add Inspection</a></li>
+            <li><a class="dropdown-item" href="view_flats.php">View Flats</a></li>
+            <li><a class="dropdown-item" href="view_inspections.php">View Inspections</a></li>
+            <li><a class="dropdown-item" href="add_inspection.php">Add Inspection</a></li>
         </ul>
         <hr class="dropdown-divider mt-sm-3 mt-md-0 d-md-none d-lg-none d-lx-none d-xxl-none">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
